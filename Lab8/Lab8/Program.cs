@@ -12,17 +12,16 @@ namespace Lab8
         public static string[] foods = new string[100];
         public static string[] towns = new string[100];
 
-
         static void Main(string[] args)
         {
             AddStudent("Andre", "veggie burgers", "St. Catherines", 0);
             AddStudent("Tom", "chicken curry", "Raleigh, NC", 1);
-            string info = GetInput();
-            Console.WriteLine(info);
+            string studentInfo = GetInput();
+            Console.WriteLine(studentInfo);
         }
 
         // Add info to arrays.
-        public static void AddStudent(string name, string town, string food, int index)
+        public static void AddStudent(string name, string food, string town, int index)
         {
             names[index] = name;
             foods[index] = food;
@@ -32,14 +31,21 @@ namespace Lab8
         // Pull info from arrays of student info.
         public static string GetStudent(int index)
         {
-            return ($"{names[index]} {foods[index]} {towns[index]}");        
+            try
+            {
+                return ($"Name: {names[index]}, Favorite Food: {foods[index]}, Hometown: {towns[index]}");
+            }
+            catch (System.IndexOutOfRangeException)
+            {
+                return ("Student not found, try another index");
+            }        
         }
 
         // Prints all students.
         public static void PrintMenu()
         {
-            Console.WriteLine("Welcome to our C# class.  Which student would you like to learn more about?");
-            for(int i = 0; i < names.Length; i++)
+            Console.WriteLine("Who would you like to learn about?");
+            for (int i = 0; i < names.Length; i++)
             {
                 string name = names[i];
                 if(name != null)
@@ -63,7 +69,7 @@ namespace Lab8
 
                 if (names[index - 1] == null)
                 {
-                    Console.WriteLine("Invalid input. That number does not correspond to a student index. Please enter an integer that corresponds to a student index.");
+                    Console.WriteLine("Student not found, try another index.");
                     return GetInput();
                 }
                 else
@@ -74,21 +80,38 @@ namespace Lab8
             }
             catch(System.FormatException)
             {
-                Console.WriteLine("Invalid input. Please enter an integer that corresponds to a student index.");
                 return GetInput();
-            }
-
-            
-
-            // if int.Parse works, pass to GetStudent(). else, throw an exception, catch it, and tell the user to try again. 
-            //Throw and catch a format exception
-             
+            }             
         }
 
-    //// 
-    //public static void LearnMore()
-    //{
+        // 
+        public static void LearnMore(int index)
+        {
+            Console.WriteLine($"{names[index]} - Info available: Hometown, Favorite Food");
+            Console.WriteLine($"What would you like to learn more about {names[index]}? Hometown or favorite food?");
+            string input = Console.ReadLine().ToLower().Trim().Replace(" ", "");
 
-    //}
-}
+            try
+            {
+                if (input.Contains("home") || input.Contains("town"))
+                {
+                    Console.WriteLine($"{names[index]}'s hometown is {towns[index]}");
+                }
+                else if (input.Contains("favorite") || input.Contains("food"))
+                {
+                    Console.WriteLine($"{names[index]}'s favorite food is {foods[index - 1]}");
+                }
+                else
+                {
+                    LearnMore(index);
+                }
+            }
+
+            catch (Exception)
+            {
+                Console.WriteLine("That data does not exist. Please try again.");
+                LearnMore(index);
+            }           
+        }
+    }
 }
