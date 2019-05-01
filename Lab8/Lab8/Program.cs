@@ -83,8 +83,7 @@ namespace Lab8
                 return GetInput();
             }             
         }
-
-        // 
+ 
         public static void LearnMore(int index)
         {
             Console.WriteLine($"{names[index]} - Info available: Hometown, Favorite Food");
@@ -106,7 +105,6 @@ namespace Lab8
                     LearnMore(index);
                 }
             }
-
             catch (Exception)
             {
                 Console.WriteLine("That data does not exist. Please try again.");
