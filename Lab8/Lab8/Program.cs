@@ -8,24 +8,21 @@ namespace Lab8
 {
     class Program
     {
-        public static string[] names = new string[100];
-        public static string[] foods = new string[100];
-        public static string[] towns = new string[100];
+        public static List <Student> students = new List <Student>();
 
         static void Main(string[] args)
         {
-            AddStudent("Andre", "veggie burgers", "St. Catherines", 0);
-            AddStudent("Tom", "chicken curry", "Raleigh, NC", 1);
+            AddStudent("Andre", "veggie burgers", "St. Catherines");
+            AddStudent("Tom", "chicken curry", "Raleigh, NC");
             string studentInfo = GetInput();
             Console.WriteLine(studentInfo);
         }
 
         // Add info to arrays.
-        public static void AddStudent(string name, string food, string town, int index)
+        public static void AddStudent(string name, string food, string town)
         {
-            names[index] = name;
-            foods[index] = food;
-            towns[index] = town;
+            students.Add(new Student(name, food, town));
+
         }
 
         // Pull info from arrays of student info.
@@ -33,7 +30,7 @@ namespace Lab8
         {
             try
             {
-                return ($"Name: {names[index]}, Favorite Food: {foods[index]}, Hometown: {towns[index]}");
+                return ($"Name: {students[index].Name}, Favorite Food: {students[index].FavoriteFood}, Hometown: {students[index].HomeTown}");
             }
             catch (System.IndexOutOfRangeException)
             {
@@ -45,12 +42,12 @@ namespace Lab8
         public static void PrintMenu()
         {
             Console.WriteLine("Who would you like to learn about?");
-            for (int i = 0; i < names.Length; i++)
+            for (int i = 0; i < students.Count; i++)
             {
-                string name = names[i];
+                string name = students[i].Name;
                 if(name != null)
                 {
-                    Console.WriteLine(i + 1 + ") " + names[i]);
+                    Console.WriteLine(i + 1 + ") " + students[i].Name);
                 }
             }
 
@@ -67,7 +64,7 @@ namespace Lab8
             {
                 int index = int.Parse(input);
 
-                if (names[index - 1] == null)
+                if (students[index - 1].Name == null)
                 {
                     Console.WriteLine("Student not found, try another index.");
                     return GetInput();
@@ -86,19 +83,19 @@ namespace Lab8
  
         public static void LearnMore(int index)
         {
-            Console.WriteLine($"{names[index]} - Info available: Hometown, Favorite Food");
-            Console.WriteLine($"What would you like to learn more about {names[index]}? Hometown or favorite food?");
+            Console.WriteLine($"{students[index].Name} - Info available: Hometown, Favorite Food");
+            Console.WriteLine($"What would you like to learn more about {students[index].Name}? Hometown or favorite food?");
             string input = Console.ReadLine().ToLower().Trim().Replace(" ", "");
 
             try
             {
                 if (input.Contains("home") || input.Contains("town"))
                 {
-                    Console.WriteLine($"{names[index]}'s hometown is {towns[index]}");
+                    Console.WriteLine($"{students[index].Name}'s hometown is {students[index].HomeTown}");
                 }
                 else if (input.Contains("favorite") || input.Contains("food"))
                 {
-                    Console.WriteLine($"{names[index]}'s favorite food is {foods[index - 1]}");
+                    Console.WriteLine($"{students[index].Name}'s favorite food is {students[index - 1].FavoriteFood}");
                 }
                 else
                 {
